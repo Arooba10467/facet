@@ -2,8 +2,6 @@
 Facet - Intelligent Cognitive Environment Monitor
 Streamlit dashboard implementation (Proposal Section 6-7)
 
-Run locally with:   streamlit run app.py
-Deploy for free on: https://share.streamlit.io  (connect your GitHub repo)
 """
 
 import time
@@ -69,8 +67,21 @@ st.markdown("""
 <style>
     .big-score { font-size: 64px; font-weight: 700; line-height: 1; }
     .zone-tag { font-size: 16px; font-weight: 600; }
-    .rec-box { padding: 14px 18px; border-radius: 6px; border: 1px solid #D8DEE2; margin-top: 14px; }
-    .stMetric { background: #FFFFFF; padding: 10px; border-radius: 6px; border: 1px solid #D8DEE2; }
+    .rec-box { padding: 14px 18px; border-radius: 6px; border: 1px solid #D8DEE2; margin-top: 14px;
+               background: #FFFFFF; color: #1B2528; }
+    div[data-testid="stMetric"] {
+        background: #FFFFFF;
+        border: 1px solid #D8DEE2;
+        border-radius: 6px;
+        padding: 10px;
+    }
+    div[data-testid="stMetric"] label,
+    div[data-testid="stMetricLabel"] {
+        color: #5B6A70 !important;
+    }
+    div[data-testid="stMetricValue"] {
+        color: #1B2528 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
