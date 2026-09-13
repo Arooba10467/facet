@@ -2,6 +2,8 @@
 Facet - Intelligent Cognitive Environment Monitor
 Streamlit dashboard implementation (Proposal Section 6-7)
 
+Run locally with:   streamlit run app.py
+Deploy for free on: https://share.streamlit.io  (connect your GitHub repo)
 """
 
 import time
@@ -29,7 +31,7 @@ def interp(x, pts):
 
 
 def norm_co2(ppm):  return interp(ppm, [(400, 100), (800, 85), (1000, 60), (1400, 25), (2000, 0)])
-def norm_temp(c):   return interp(c,   [(16, 40), (20, 100), (24, 100), (28, 40), (32, 10)])
+def norm_temp(c):   return interp(c,   [(16, 40), (20, 100), (24, 100), (28, 40), (32, 10), (45, 3), (60, 0)])
 def norm_hum(pct):  return interp(pct, [(20, 40), (40, 100), (60, 100), (80, 40), (95, 10)])
 
 W_CO2, W_TEMP, W_HUM = 0.5, 0.3, 0.2  # per Proposal Section 7.2
@@ -88,6 +90,30 @@ st.markdown("""
 st.title("🧭 Facet — Real-Time Cognitive Focus Monitor")
 st.caption("FYP-I Demonstration · SZABIST University, Larkana Campus")
 
+with st.expander("ℹ️ How this demo works (click to expand)"):
+    st.markdown("""
+**What this is:** a working implementation of the Focus Score engine described in the
+FYP-I proposal (Sections 6–7), showing the full pipeline from raw environmental
+readings to a real-time cognitive focus assessment.
+
+**Formula (Proposal Section 7.2):**
+`Focus Score = 0.5 × CO2_score + 0.3 × Temperature_score + 0.2 × Humidity_score`
+
+**Where the data comes from right now:** the "Simulated live feed" mode generates
+readings using a random walk standing in for the ESP8266 sensor node, updating
+every 2 seconds — the same interval specified in the hardware design (Section 6.2).
+"Manual input" lets you set exact values to test how the formula responds to any
+scenario, including extreme local conditions (e.g., summer temperatures above 45°C).
+
+**What this validates:** Objective O2 (Focus Score formula), O3 (live + historical
+dashboard), O4 (threshold-based alerts via the zone color), and O8 (actionable,
+parameter-specific recommendations).
+
+**What's still pending:** replacing the simulated feed with real ESP8266 sensor
+readings once hardware is procured, and the empirical validation study against
+real user focus ratings (Section 7.4).
+""")
+
 # ---------------------------------------------------------------------------
 # Session state - simulated device + history (stands in for the proposal's
 # Sensing layer + time-series database, Section 6)
@@ -119,7 +145,7 @@ if mode == "Simulated live feed":
 else:
     st.sidebar.info("Drag sliders to test the model")
     co2 = st.sidebar.slider("CO2 (ppm)", 400, 2000, 600, step=10)
-    temp = st.sidebar.slider("Temperature (°C)", 16.0, 34.0, 23.0, step=0.5)
+    temp = st.sidebar.slider("Temperature (°C)", 16.0, 60.0, 23.0, step=0.5)
     hum = st.sidebar.slider("Relative Humidity (%)", 20, 90, 50, step=1)
 
 # ---------------------------------------------------------------------------
